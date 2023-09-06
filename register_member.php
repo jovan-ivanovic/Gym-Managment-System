@@ -20,4 +20,8 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 $run = $conn->prepare($sql);
 $run->bind_param("sssssiis", $first_name, $last_name, $email, $phone_number, $photo_path, $training_plan_id,  $trainer_id, $access_card_pdf_path);
 $run->execute();
+
+$_SESSION['success_message'] = 'Clan teretane uspesno dodat';
+header('location: admin_dashboard.php');
+exit();
 }
