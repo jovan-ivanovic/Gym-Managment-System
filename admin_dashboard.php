@@ -19,7 +19,15 @@ if(!isset($_SESSION['admin_id'])) {
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
 </head>
 <body>
-
+<?php
+if(isset($_SESSION['success_message'])) : ?>
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <?php echo $_SESSION['success_message']; 
+    unset($_SESSION['success_message']);
+    ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<?php endif; ?>
 
     <div class="container">
         <div class="row mb-5">
@@ -34,8 +42,18 @@ if(!isset($_SESSION['admin_id'])) {
                     Training Plan:
                     <select class="form-control" name="training_plan_id">
                         <option value="" disabled selected>Training Plan</option>
-                        <option value="2">12 sessions plan</option>
-                        <option value="3">30 sessions plan</option>
+                        
+                        <?php
+                        $sql = "SELECT * FROM training_plans";
+                        $run = $conn->query($sql);
+                        $results = $run->fetch_all(MYSQLI_ASSOC);
+
+                        foreach($results as $result){
+                            echo "<option value='" . $result['plan_id'] . "'>" . $result['name'] . "</option>";
+                        }
+                        ?>
+
+
                         <?php foreach($training_plans as $plan): ?>
                              <option value="<?=$plan['plan_id'] ?>">
                               <?= $plan['name'] ?>
@@ -52,5 +70,9 @@ if(!isset($_SESSION['admin_id'])) {
              </div>
             </div>
          </div>
+
+           <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
+
 </body>
 </html>
